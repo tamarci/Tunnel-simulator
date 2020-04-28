@@ -14,4 +14,7 @@ enum Szin {
     zold, piros
 };
 
+enum Love {
+	Bence, piros
+};
 #endif //NAGYHAZI2_ENUMS_H
