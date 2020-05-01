@@ -1,3 +1,6 @@
 .idea
 sdlshit.cpp
 cmake-build-debug
+gtest_lite.h
+memtrace.cpp
+memtrace.h
