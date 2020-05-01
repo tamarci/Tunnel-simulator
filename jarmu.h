@@ -49,6 +49,10 @@ public:
 
     bool checkLampa(Allapot all);
 
+    virtual void kiir() = 0;
+
+    virtual Jarmu *clone() = 0;
+
     virtual ~Jarmu() {}
 };
 
@@ -59,7 +63,11 @@ public:
 
     int getUtasokszama() const;
 
-    void changeSpeed();
+    virtual void changeSpeed();
+
+    virtual void kiir();
+
+    virtual Jarmu *clone();
 
     ~Auto() {}
 };
@@ -71,7 +79,11 @@ public:
 
     int getMaxSpeed() const;
 
-    void changeSpeed();
+    virtual void changeSpeed();
+
+    virtual void kiir();
+
+    virtual Jarmu *clone();
 
     ~Motor() {}
 };
@@ -86,7 +98,11 @@ public:
 
     int getTomeg() const;
 
-    void changeSpeed();
+    virtual void changeSpeed();
+
+    virtual void kiir();
+
+    virtual Jarmu *clone();
 
     ~Truck() {}
 };

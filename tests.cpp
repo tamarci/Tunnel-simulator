@@ -236,4 +236,4 @@ int main() {
             EXPECT_EQ((int)0, e.getSzamlalo()) << "Rossz szamlalo ertek" << endl;
         }
     ENDM
-}"# Tunnel-Simulator" 
+}

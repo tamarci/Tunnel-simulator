@@ -25,7 +25,7 @@ void Jarmu::halad() {
     if (irany)
         poz += speed;
     else
-        poz-=speed;
+        poz -= speed;
 }
 
 bool Jarmu::checkLampa(Allapot all) {
@@ -41,10 +41,20 @@ void Motor::changeSpeed() {
     else speed = maxSpeed;
 }
 
+Jarmu *Motor::clone() {
+    return new Motor(*this);
+}
+
+void Motor::kiir() {
+    std::cout << "T " << getPoz() << ' ' << isIrany() << ' ' << getSpeed() << ' ' << getErkezes() << ' '
+              << getGyorsitas() << " " << maxSpeed << std::endl;
+}
+
 int Motor::getMaxSpeed() const {
     return maxSpeed;
 }
 
+//Auto fv-nyei
 Auto::Auto(bool irany, const Idopont &erk, const Idopont &gyors, int utasok)
         : Jarmu(irany, erk, gyors), utasokszama(utasok) {
     if (utasok < 1 || utasok > 5) {
@@ -62,15 +72,35 @@ void Auto::changeSpeed() {
         speed = 1;
 }
 
+Jarmu *Auto::clone() {
+    return new Auto(*this);
+}
+
+void Auto::kiir() {
+    std::cout << "T " << getPoz() << ' ' << isIrany() << ' ' << getSpeed() << ' ' << getErkezes() << ' '
+              << getGyorsitas() << " " << utasokszama << std::endl;
+}
+
 int Auto::getUtasokszama() const {
     return utasokszama;
 }
 
+
+//teherauto fv-nyei
 Truck::Truck(bool irany, const Idopont &erk, const Idopont &gyors, int m) : Jarmu(irany, erk, gyors),
-                                                                                          tomeg(m) {}
+                                                                            tomeg(m) {}
 
 void Truck::changeSpeed() {
     speed += (2 * (100 / tomeg));
+}
+
+Jarmu *Truck::clone() {
+    return new Truck(*this);
+}
+
+void Truck::kiir() {
+    std::cout << "T " << getPoz() << ' ' << isIrany() << ' ' << getSpeed() << ' ' << getErkezes() << ' '
+              << getGyorsitas() << " " << tomeg << std::endl;
 }
 
 int Truck::getTomeg() const {
