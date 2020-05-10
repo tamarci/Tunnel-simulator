@@ -29,9 +29,7 @@ class Lamparendszer {
     Lampa l1, l2;
     Allapot allapot;
 public:
-    Lamparendszer() {}
-
-    void init();
+    Lamparendszer(): allapot(Init){}
 
     void kovAllapot();
 

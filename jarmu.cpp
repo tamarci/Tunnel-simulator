@@ -11,6 +11,7 @@ Jarmu::Jarmu(bool irany, const Idopont &erk, const Idopont &gyors) : irany(irany
     else
         poz = 100;
     speed = 4;
+    mozgasban=false;
 }
 
 Jarmu::Jarmu(const Jarmu &j) {
@@ -28,9 +29,14 @@ void Jarmu::halad() {
         poz -= speed;
 }
 
+void Jarmu::setMozgasban(bool megy) {
+    mozgasban = megy;
+}
+
 bool Jarmu::checkLampa(Allapot all) {
     return (irany && all == All1) || (!irany && all == All3);
 }
+
 
 Motor::Motor(bool irany, const Idopont &erk, Idopont gyors, int max) : Jarmu(irany, erk, gyors),
                                                                        maxSpeed(max) {}
@@ -46,7 +52,7 @@ Jarmu *Motor::clone() {
 }
 
 void Motor::kiir() {
-    std::cout << "T " << getPoz() << ' ' << isIrany() << ' ' << getSpeed() << ' ' << getErkezes() << ' '
+    std::cout << "M " << getPoz() << ' ' << isIrany() << ' ' << getSpeed() << ' ' << getErkezes() << ' '
               << getGyorsitas() << " " << maxSpeed << std::endl;
 }
 
@@ -77,7 +83,7 @@ Jarmu *Auto::clone() {
 }
 
 void Auto::kiir() {
-    std::cout << "T " << getPoz() << ' ' << isIrany() << ' ' << getSpeed() << ' ' << getErkezes() << ' '
+    std::cout << "A " << getPoz() << ' ' << isIrany() << ' ' << getSpeed() << ' ' << getErkezes() << ' '
               << getGyorsitas() << " " << utasokszama << std::endl;
 }
 

@@ -4,17 +4,19 @@
 
 #ifndef NAGYHAZI2_FORGALOM_H
 #define NAGYHAZI2_FORGALOM_H
+
 #include <vector>
-#include "Jarmu.h"
+#include "jarmu.h"
 
 
-class Forgalom{
-    std::vector<Jarmu*> jarmuvek;
+class Forgalom {
+    std::vector<Jarmu *> jarmuvek;
 public:
+    Forgalom() {}
 
     Forgalom(const Forgalom &f) {
         for (int i = 0; i < jarmuvek.size(); ++i) {
-            jarmuvek.push_back( f.jarmuvek[i]->clone());
+            jarmuvek.push_back(f.jarmuvek[i]->clone());
         }
     }
 
@@ -48,9 +50,9 @@ public:
     }
 
     int keres() {
-        int osszmod=0;
+        int osszmod = 0;
         for (int i = 0; i < jarmuvek.size(); ++i) {
-            if(true)
+            if (true)
                 jarmuvek[i]->kiir();
 
         }
@@ -62,6 +64,33 @@ public:
         jarmuvek.erase(jarmuvek.begin() + idx);
     }
 
+    void kovAllapot(Idopont ido, Allapot all){
+        for (int i = 0; i < jarmuvek.size(); ++i) {
+
+            if(jarmuvek[i]->getPoz()<0||jarmuvek[i]->getPoz()>100)
+                    torol(i);
+
+            else {
+
+                if(ido==jarmuvek[i]->getErkezes())
+                    jarmuvek[i]->setMozgasban(true);
+
+                if (ido == jarmuvek[i]->getGyorsitas())
+                    jarmuvek[i]->changeSpeed();
+
+                if(( all!=All1 && jarmuvek[i]->isIrany() && jarmuvek[i]->getPoz()+jarmuvek[i]->getSpeed()>erz1.getPoz()) ||(all!=All3 && !jarmuvek[i]->isIrany() && jarmuvek[i]->getPoz()-jarmuvek[i]->getSpeed()<erz1.getPoz()))
+                    jarmuvek[i]->setMozgasban(false);
+
+                //ebbol valahogy ki is kell jönnie ha ujra zold lesz neki
+                // erzekelo problemat meg kell oldani
+
+                if(jarmuvek[i]->isMozgasban())
+                    jarmuvek[i]->halad();
+            }
+        }
+
+    }
+
     ~Forgalom() {
         for (int i = 0; i < jarmuvek.size(); ++i) {
             delete jarmuvek[i];
@@ -69,4 +98,5 @@ public:
     }
 
 };
+
 #endif //NAGYHAZI2_FORGALOM_H

@@ -5,18 +5,24 @@
 #ifndef NAGYHAZI2_SZIMULACIO_H
 #define NAGYHAZI2_SZIMULACIO_H
 
+#include <iostream>
+#include <fstream>
+#include <stdexcept>
+
 #include "lampak.h"
+#include "enums.h"
 #include "jarmu.h"
 #include "erzekelok.h"
 #include "Idopont.h"
+#include "Forgalom.h"
 //#include "memtrace.h"
 
-#include <iostream>
+
 
 class Szimulacio {
     Lamparendszer lampak;
     Erzekelok erzekelok;
-    std::vector<Jarmu *> forgalom;
+    Forgalom forgalom;
     Idopont ido;
     int palya;
 public:
@@ -26,7 +32,7 @@ public:
 
     int getPalya() const;
 
-    void init();
+    void init(const char* Filenev);
 
     void run();
 

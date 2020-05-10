@@ -13,10 +13,12 @@ class Jarmu {
     int poz;
     bool irany;
     Idopont erkezes;
+    bool mozgasban;
 
 protected:
     int speed;
     Idopont gyorsitas;
+
 public:
 
     Jarmu(bool irany, const Idopont &erk, const Idopont &gyors);
@@ -39,11 +41,17 @@ public:
         return irany;
     }
 
+    bool isMozgasban() const{
+        return mozgasban;
+    }
+
     Idopont getErkezes() const {
         return erkezes;
     }
 
     virtual void changeSpeed() = 0;
+
+    void setMozgasban(bool megy);
 
     void halad();
 
@@ -54,6 +62,8 @@ public:
     virtual Jarmu *clone() = 0;
 
     virtual ~Jarmu() {}
+
+
 };
 
 class Auto : public Jarmu {

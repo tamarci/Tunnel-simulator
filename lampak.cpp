@@ -28,7 +28,3 @@ void Lamparendszer::kovAllapot(){
             break;
     }
 }
-
-void Lamparendszer::init() {
-    allapot = Init;
-}
