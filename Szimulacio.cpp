@@ -8,7 +8,9 @@
 // de lehet, hogy a konyvtar hibas
 
 
+
 void Szimulacio::init(const char *Filenev) {
+    int id=0;
     char tipus;
     bool irany;
     Idopont erk, gyors;
@@ -19,21 +21,22 @@ void Szimulacio::init(const char *Filenev) {
         while (myfile >> tipus >> irany >> erk >> gyors >> spec) {
             switch (tipus) {
                 case 'A':
-                    forgalom.hozzad(new Auto(irany, erk, gyors, spec));
+                    forgalom.hozzad(new Auto(id,irany, erk, gyors, spec));
                     std::cout << "a";
                     break;
                 case 'M':
-                    forgalom.hozzad(new Motor(irany, erk, gyors, spec));
+                    forgalom.hozzad(new Motor(id,irany, erk, gyors, spec));
                     std::cout << "m";
                     break;
                 case 'T':
-                    forgalom.hozzad(new Truck(irany, erk, gyors, spec));
+                    forgalom.hozzad(new Truck(id,irany, erk, gyors, spec));
                     std::cout << "t";
                     break;
                 default:
                     throw std::logic_error("Hibas bemeneti formatum");
                     break;
             }
+            id++;
         }
         myfile.close();
 
@@ -42,9 +45,6 @@ void Szimulacio::init(const char *Filenev) {
     std::cout << std::endl;
     forgalom.minden_kiir();
 
-    if (lampak.getAllapot() == Init)
-        std::cout << "torold ezt a szar initet";
-
 }
 
 void Szimulacio::run() {
@@ -52,24 +52,39 @@ void Szimulacio::run() {
     //lamparendszer allitasa
     int kapcsolasiIdo = 10;
 
-    while (ido.getIdo() != 100) {
+    while (ido.getIdo() != 120) {
         if (ido.getIdo() == 0) {
+
             lampak.kovAllapot();
             kapcsolasiIdo = ido.getIdo();
-        } else if (ido.getIdo() - kapcsolasiIdo == 10 && lampak.getAllapot() == All1)
+            std::cout << ido << " Lamparendszer ALL1: l1=zold, l2=piros" << std::endl;
+
+        } else if (ido.getIdo() - kapcsolasiIdo == 10 && lampak.getAllapot() == All1) {
+
             lampak.kovAllapot();
-        else if (erzekelok.getSzamlalo() == 0 && lampak.getAllapot() == All2) {
+            std::cout << ido << " Lamparendszer ALL2: l1=piros, l2=piros" << std::endl;
+
+        } else if (erzekelok.getSzamlalo() == 0 && lampak.getAllapot() == All2) {
+
             lampak.kovAllapot();
             kapcsolasiIdo = ido.getIdo();
-        } else if (ido.getIdo() - kapcsolasiIdo == 10 && lampak.getAllapot() == All3)
+            std::cout << ido << " Lamparendszer ALL3: l1=piros, l2=zold" << std::endl;
+
+        } else if (ido.getIdo() - kapcsolasiIdo == 10 && lampak.getAllapot() == All3) {
+
             lampak.kovAllapot();
-        else if (erzekelok.getSzamlalo() == 0 && lampak.getAllapot() == All4) {
+            std::cout << ido << " Lamparendszer ALL4: l1=piros, l2=piros" << std::endl;
+
+        } else if (erzekelok.getSzamlalo() == 0 && lampak.getAllapot() == All4) {
+
             lampak.kovAllapot();
             kapcsolasiIdo = ido.getIdo();
+            std::cout << ido << " Lamparendszer ALL1: l1=zold, l2=piros" << std::endl;
         }
 
+
         //jarmuvek megallitasanak vizsgalasa a lampanal
-        forgalom.lampanal(lampak.getAllapot());
+        forgalom.lampanal(lampak.getAllapot(), erzekelok.getPoz1(), erzekelok.getPoz2());
 
         //Erzekelok novelese, csokkentese ha egy jarmu be, ki lép az alagutbol
         if (lampak.getAllapot() == All1 || lampak.getAllapot() == All2) {
@@ -77,8 +92,7 @@ void Szimulacio::run() {
             erzekelok.szamlaloNo(forgalom.fatlep(erzekelok.getPoz1()));
             erzekelok.szamlaloCsokken(forgalom.fatlep(erzekelok.getPoz2()));
 
-        }
-        else if (lampak.getAllapot() == All3 || lampak.getAllapot() == All4) {
+        } else if (lampak.getAllapot() == All3 || lampak.getAllapot() == All4) {
 
             erzekelok.szamlaloNo(forgalom.fatlep(erzekelok.getPoz2()));
             erzekelok.szamlaloCsokken(forgalom.fatlep(erzekelok.getPoz1()));
@@ -90,8 +104,11 @@ void Szimulacio::run() {
         forgalom.kovAllapot(ido, lampak.getAllapot());
 
 
+        //forgalom.minden_kiir();
         //ido leptetese
         ido.telik();
+
+
     }
 }
 

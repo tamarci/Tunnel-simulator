@@ -50,6 +50,9 @@ public:
             if(jarmuvek[i]->atlep(poz))
                 ossz++;
         }
+        if(ossz==1){
+            std::cout<<"sikerult egyet megszamolni valamerre"<<std::endl;
+        }
         return ossz;
     }
 
@@ -62,22 +65,30 @@ public:
 void lampanal(Allapot all, int poz1,int poz2) {
     for (size_t i = 0; i < jarmuvek.size(); ++i) {
 
-        if (all != All1 && jarmuvek[i]->atlep(poz1)){ //logikai irany tesztek kellenek
+        if (all != All1 && jarmuvek[i]->isIrany() && jarmuvek[i]->atlep(poz1)){ //logikai irany tesztek kellenek
 
             jarmuvek[i]->setPoz(poz1 - 1);
             jarmuvek[i]->setMozgasban(false);
+            std::cout << "Az " << jarmuvek[i]->getId() << ". jarmu megallt a pirosnal (l1)" << std::endl;
 
         }
-        else if(all != All3 && jarmuvek[i]->atlep(poz2)) { //pozitiv iranyu kocsi atlepi ezt Mert all1,2ben van és megall??
+        else if(all != All3 && !jarmuvek[i]->isIrany()  && jarmuvek[i]->atlep(poz2)) {
 
             jarmuvek[i]->setPoz(poz2 + 1);
             jarmuvek[i]->setMozgasban(false);
-
+            std::cout << "Az " << jarmuvek[i]->getId() << ". jarmu megallt a pirosnal (l2)" << std::endl;
         }
 
-        if ((all == All1 && jarmuvek[i]->isIrany() && (jarmuvek[i]->getPoz() == poz1- 1)) ||
-                   (all == All3 && !jarmuvek[i]->isIrany() && (jarmuvek[i]->getPoz() == poz2 + 1))) {
+        if (all == All1 && jarmuvek[i]->isIrany() && (jarmuvek[i]->getPoz() == poz1- 1))  {
+
             jarmuvek[i]->setMozgasban(true);
+            std::cout << "Az " << jarmuvek[i]->getId() << ". jarmu elindult a pirostol (l1)" << std::endl;
+
+        }
+        else if(all == All3 && !jarmuvek[i]->isIrany() && (jarmuvek[i]->getPoz() == poz2 + 1)){
+
+            jarmuvek[i]->setMozgasban(true);
+            std::cout << "Az " << jarmuvek[i]->getId() << ". jarmu elindult a pirostol (l2)" << std::endl;
         }
 
 
@@ -88,16 +99,20 @@ void lampanal(Allapot all, int poz1,int poz2) {
     void kovAllapot(Idopont ido, Allapot all){
         for (size_t i = 0; i < jarmuvek.size(); ++i) {
 
-            if(jarmuvek[i]->getPoz()<0||jarmuvek[i]->getPoz()>100)
-                    torol(i);
-
+            if(jarmuvek[i]->getPoz()<0||jarmuvek[i]->getPoz()>100) {
+                std::cout << "Az " << jarmuvek[i]->getId() << ". jarmu elhagyta a palyat" << std::endl;
+                torol(i);
+            }
             else {
 
-                if(ido==jarmuvek[i]->getErkezes())
+                if(ido==jarmuvek[i]->getErkezes()) {
                     jarmuvek[i]->setMozgasban(true);
-
-                if (ido == jarmuvek[i]->getGyorsitas())
+                    std::cout << "Az " << jarmuvek[i]->getId() << ". jarmu megerkezett a palyara" << std::endl;
+                }
+                if (ido == jarmuvek[i]->getGyorsitas() && ido.getIdo() != 0) {
                     jarmuvek[i]->changeSpeed();
+                    std::cout << "Az " << jarmuvek[i]->getId() << ". gyorsit" << std::endl;
+                }
 
                 if(jarmuvek[i]->isMozgasban())
                     jarmuvek[i]->halad();

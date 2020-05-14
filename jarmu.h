@@ -10,6 +10,7 @@
 //#include "memtrace.h"
 
 class Jarmu {
+    int id;
     int poz;
     bool irany;
     Idopont erkezes;
@@ -21,9 +22,13 @@ protected:
 
 public:
 
-    Jarmu(bool irany, const Idopont &erk, const Idopont &gyors);
+    Jarmu(int id, bool irany, const Idopont &erk, const Idopont &gyors);
 
     Jarmu(const Jarmu &j);
+
+    int getId(){
+        return  id;
+    }
 
     int getPoz() const {
         return poz;
@@ -73,7 +78,7 @@ public:
 class Auto : public Jarmu {
     int utasokszama;
 public:
-    Auto(bool irany = true, const Idopont &erk = 0, const Idopont &gyors = 0, int utasok = 2);
+    Auto(int id, bool irany = true, const Idopont &erk = 0, const Idopont &gyors = 0, int utasok = 2);
 
     int getUtasokszama() const; //ha nem kell akkor majd torold
 
@@ -89,7 +94,7 @@ public:
 class Motor : public Jarmu {
     int maxSpeed;
 public:
-    Motor(bool irany = 1, const Idopont &erk = 0, Idopont gyors = 0, int max = 10);
+    Motor(int id, bool irany = 1, const Idopont &erk = 0, Idopont gyors = 0, int max = 10);
 
     int getMaxSpeed() const;
 
@@ -107,7 +112,7 @@ class Truck : public Jarmu {
 public:
 
 
-    Truck(bool irany = true, const Idopont &erk = 0, const Idopont &gyors = 0, int m = 100);
+    Truck(int id, bool irany = true, const Idopont &erk = 0, const Idopont &gyors = 0, int m = 100);
 
 
     int getTomeg() const;

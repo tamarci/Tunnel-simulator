@@ -5,7 +5,7 @@
 #include "jarmu.h"
 //#include "memtrace.h"
 
-Jarmu::Jarmu(bool irany, const Idopont &erk, const Idopont &gyors) : irany(irany), erkezes(erk), gyorsitas(gyors) {
+Jarmu::Jarmu(int id,bool irany, const Idopont &erk, const Idopont &gyors) : id(id), irany(irany), erkezes(erk), gyorsitas(gyors) {
     if (irany)
         poz = 0;
     else
@@ -15,6 +15,7 @@ Jarmu::Jarmu(bool irany, const Idopont &erk, const Idopont &gyors) : irany(irany
 }
 
 Jarmu::Jarmu(const Jarmu &j) {
+    id=j.id;
     poz = j.poz;
     irany = j.irany;
     erkezes = j.erkezes;
@@ -55,7 +56,7 @@ bool Jarmu::atlep(int pozv) {   //megnezi, hogy az auto atlepi-e a megadott koo.
 }
 
 
-Motor::Motor(bool irany, const Idopont &erk, Idopont gyors, int max) : Jarmu(irany, erk, gyors),
+Motor::Motor(int id,bool irany, const Idopont &erk, Idopont gyors, int max) : Jarmu(id,irany, erk, gyors),
                                                                        maxSpeed(max) {}
 
 void Motor::changeSpeed() {
@@ -69,8 +70,8 @@ Jarmu *Motor::clone() {
 }
 
 void Motor::kiir() {
-    std::cout << "M " << getPoz() << ' ' << isIrany() << ' ' << getSpeed() << ' ' << getErkezes() << ' '
-              << getGyorsitas() << " " << maxSpeed << std::endl;
+    std::cout << "M " <<getId()<<". poz: " << getPoz() << " dir: " << isIrany() << " speed: " << getSpeed() << ' ' << getErkezes() << ' '
+              << getGyorsitas() << " maxspeed: " << maxSpeed << std::endl;
 }
 
 int Motor::getMaxSpeed() const {
@@ -78,8 +79,8 @@ int Motor::getMaxSpeed() const {
 }
 
 //Auto fv-nyei
-Auto::Auto(bool irany, const Idopont &erk, const Idopont &gyors, int utasok)
-        : Jarmu(irany, erk, gyors), utasokszama(utasok) {
+Auto::Auto(int id,bool irany, const Idopont &erk, const Idopont &gyors, int utasok)
+        : Jarmu(id, irany, erk, gyors), utasokszama(utasok) {
     if (utasok < 1 || utasok > 5) {
         std::cout << "Hibas utasszam";
         utasok = 2;
@@ -91,8 +92,8 @@ void Auto::changeSpeed() {
         speed -= utasokszama;
     else speed += utasokszama;
 
-    if (speed < 1)
-        speed = 1;
+    if (speed < 2)
+        speed = 2;
 }
 
 Jarmu *Auto::clone() {
@@ -100,8 +101,8 @@ Jarmu *Auto::clone() {
 }
 
 void Auto::kiir() {
-    std::cout << "A " << getPoz() << ' ' << isIrany() << ' ' << getSpeed() << ' ' << getErkezes() << ' '
-              << getGyorsitas() << " " << utasokszama << std::endl;
+    std::cout << "A " <<getId()<<". poz: " << getPoz() << " dir: " << isIrany() << " speed: " << getSpeed() << ' ' << getErkezes() << ' '
+              << getGyorsitas() << " utasoksz.: " << utasokszama << std::endl;
 }
 
 int Auto::getUtasokszama() const {
@@ -110,7 +111,7 @@ int Auto::getUtasokszama() const {
 
 
 //teherauto fv-nyei
-Truck::Truck(bool irany, const Idopont &erk, const Idopont &gyors, int m) : Jarmu(irany, erk, gyors),
+Truck::Truck(int id, bool irany, const Idopont &erk, const Idopont &gyors, int m) : Jarmu(id, irany, erk, gyors),
                                                                             tomeg(m) {}
 
 void Truck::changeSpeed() {
@@ -122,8 +123,8 @@ Jarmu *Truck::clone() {
 }
 
 void Truck::kiir() {
-    std::cout << "T " << getPoz() << ' ' << isIrany() << ' ' << getSpeed() << ' ' << getErkezes() << ' '
-              << getGyorsitas() << " " << tomeg << std::endl;
+    std::cout << "T " <<getId()<<". poz: " << getPoz() << " dir: " << isIrany() << " speed: " << getSpeed() << ' ' << getErkezes() << ' '
+              << getGyorsitas() << " tom.: " << tomeg << std::endl;
 }
 
 int Truck::getTomeg() const {

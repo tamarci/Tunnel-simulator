@@ -16,5 +16,6 @@
 int main(){
     Szimulacio sz;
     sz.init("test.txt");
+    sz.run();
     return 0;
 }
