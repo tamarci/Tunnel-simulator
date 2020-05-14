@@ -38,25 +38,19 @@ public:
     }
 
     void minden_kiir() {
-        for (int i = 0; i < jarmuvek.size(); ++i) {
+        for (size_t i = 0; i < jarmuvek.size(); ++i) {
             jarmuvek[i]->kiir();
         }
     }
 
-    void minden_halad() {
-        for (int i = 0; i < jarmuvek.size(); ++i) {
-            jarmuvek[i]->halad();
-        }
-    }
 
-    int keres() {
-        int osszmod = 0;
-        for (int i = 0; i < jarmuvek.size(); ++i) {
-            if (true)
-                jarmuvek[i]->kiir();
-
+    int fatlep(int poz) { //osszeszamolja hogy a jarmuvek kozul hanyan fognak atlepni egy pontot
+        int ossz = 0;
+        for (size_t i = 0; i < jarmuvek.size(); ++i) {
+            if(jarmuvek[i]->atlep(poz))
+                ossz++;
         }
-        return osszmod;
+        return ossz;
     }
 
     void torol(size_t idx) {
@@ -64,8 +58,35 @@ public:
         jarmuvek.erase(jarmuvek.begin() + idx);
     }
 
+
+void lampanal(Allapot all, int poz1,int poz2) {
+    for (size_t i = 0; i < jarmuvek.size(); ++i) {
+
+        if (all != All1 && jarmuvek[i]->atlep(poz1)){ //logikai irany tesztek kellenek
+
+            jarmuvek[i]->setPoz(poz1 - 1);
+            jarmuvek[i]->setMozgasban(false);
+
+        }
+        else if(all != All3 && jarmuvek[i]->atlep(poz2)) { //pozitiv iranyu kocsi atlepi ezt Mert all1,2ben van és megall??
+
+            jarmuvek[i]->setPoz(poz2 + 1);
+            jarmuvek[i]->setMozgasban(false);
+
+        }
+
+        if ((all == All1 && jarmuvek[i]->isIrany() && (jarmuvek[i]->getPoz() == poz1- 1)) ||
+                   (all == All3 && !jarmuvek[i]->isIrany() && (jarmuvek[i]->getPoz() == poz2 + 1))) {
+            jarmuvek[i]->setMozgasban(true);
+        }
+
+
+
+    }
+}
+
     void kovAllapot(Idopont ido, Allapot all){
-        for (int i = 0; i < jarmuvek.size(); ++i) {
+        for (size_t i = 0; i < jarmuvek.size(); ++i) {
 
             if(jarmuvek[i]->getPoz()<0||jarmuvek[i]->getPoz()>100)
                     torol(i);
@@ -78,12 +99,6 @@ public:
                 if (ido == jarmuvek[i]->getGyorsitas())
                     jarmuvek[i]->changeSpeed();
 
-                if(( all!=All1 && jarmuvek[i]->isIrany() && jarmuvek[i]->getPoz()+jarmuvek[i]->getSpeed()>erz1.getPoz()) ||(all!=All3 && !jarmuvek[i]->isIrany() && jarmuvek[i]->getPoz()-jarmuvek[i]->getSpeed()<erz1.getPoz()))
-                    jarmuvek[i]->setMozgasban(false);
-
-                //ebbol valahogy ki is kell jönnie ha ujra zold lesz neki
-                // erzekelo problemat meg kell oldani
-
                 if(jarmuvek[i]->isMozgasban())
                     jarmuvek[i]->halad();
             }
@@ -92,7 +107,7 @@ public:
     }
 
     ~Forgalom() {
-        for (int i = 0; i < jarmuvek.size(); ++i) {
+        for (size_t i = 0; i < jarmuvek.size(); ++i) {
             delete jarmuvek[i];
         }
     }

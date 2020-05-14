@@ -11,7 +11,7 @@ Jarmu::Jarmu(bool irany, const Idopont &erk, const Idopont &gyors) : irany(irany
     else
         poz = 100;
     speed = 4;
-    mozgasban=false;
+    mozgasban = false;
 }
 
 Jarmu::Jarmu(const Jarmu &j) {
@@ -33,8 +33,25 @@ void Jarmu::setMozgasban(bool megy) {
     mozgasban = megy;
 }
 
+void Jarmu::setPoz(int pozv) {
+    poz=pozv;
+}
+
 bool Jarmu::checkLampa(Allapot all) {
     return (irany && all == All1) || (!irany && all == All3);
+}
+
+bool Jarmu::atlep(int pozv) {   //megnezi, hogy az auto atlepi-e a megadott koo.-t a következo mp-ben
+    if (mozgasban) {    //csak akkor van ertelme ezt vizsgalni ha azt auto mozog
+        if (irany) { //egyik irany
+            if (poz <= pozv && poz + speed > pozv)
+                return true;                    //ez logikailag egyszerusitheto lenne, de az atlathatosag kedveert meghagyom igy
+        } else { //masik irany
+            if (poz >= pozv && poz - speed < pozv)
+                return true;
+        }
+    }
+    return false;
 }
 
 

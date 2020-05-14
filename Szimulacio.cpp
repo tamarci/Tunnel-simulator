@@ -48,36 +48,47 @@ void Szimulacio::init(const char *Filenev) {
 }
 
 void Szimulacio::run() {
-    //rendszer allitasa
+
+    //lamparendszer allitasa
     int kapcsolasiIdo = 10;
+
     while (ido.getIdo() != 100) {
-        if (ido.getIdo() == 0){
+        if (ido.getIdo() == 0) {
             lampak.kovAllapot();
-            kapcsolasiIdo=ido.getIdo();
-        }
-        else if (ido.getIdo() - kapcsolasiIdo == 10 && lampak.getAllapot() == All1)
+            kapcsolasiIdo = ido.getIdo();
+        } else if (ido.getIdo() - kapcsolasiIdo == 10 && lampak.getAllapot() == All1)
             lampak.kovAllapot();
-        else if (erzekelok.getSzamlalo() == 0 && lampak.getAllapot() == All2){
+        else if (erzekelok.getSzamlalo() == 0 && lampak.getAllapot() == All2) {
             lampak.kovAllapot();
-            kapcsolasiIdo=ido.getIdo();
-        }
-        else if (ido.getIdo() - kapcsolasiIdo == 10 && lampak.getAllapot() == All3)
+            kapcsolasiIdo = ido.getIdo();
+        } else if (ido.getIdo() - kapcsolasiIdo == 10 && lampak.getAllapot() == All3)
             lampak.kovAllapot();
         else if (erzekelok.getSzamlalo() == 0 && lampak.getAllapot() == All4) {
             lampak.kovAllapot();
-            kapcsolasiIdo=ido.getIdo();
+            kapcsolasiIdo = ido.getIdo();
+        }
+
+        //jarmuvek megallitasanak vizsgalasa a lampanal
+        forgalom.lampanal(lampak.getAllapot());
+
+        //Erzekelok novelese, csokkentese ha egy jarmu be, ki lép az alagutbol
+        if (lampak.getAllapot() == All1 || lampak.getAllapot() == All2) {
+
+            erzekelok.szamlaloNo(forgalom.fatlep(erzekelok.getPoz1()));
+            erzekelok.szamlaloCsokken(forgalom.fatlep(erzekelok.getPoz2()));
+
+        }
+        else if (lampak.getAllapot() == All3 || lampak.getAllapot() == All4) {
+
+            erzekelok.szamlaloNo(forgalom.fatlep(erzekelok.getPoz2()));
+            erzekelok.szamlaloCsokken(forgalom.fatlep(erzekelok.getPoz1()));
+
         }
 
 
-        //Erzekelok
+        //haladas,  gyorsitas
+        forgalom.kovAllapot(ido, lampak.getAllapot());
 
-
-        //jarmuvek reagalasa
-
-       forgalom.kovAllapot(ido,lampak.getAllapot());
-
-
-        //masodik a nyero
 
         //ido leptetese
         ido.telik();
@@ -85,11 +96,4 @@ void Szimulacio::run() {
 }
 
 
-const Idopont &Szimulacio::getIdo() const {
-    return ido;
-}
-
-int Szimulacio::getPalya() const {
-    return palya;
-}
 

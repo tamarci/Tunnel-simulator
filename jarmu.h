@@ -53,9 +53,13 @@ public:
 
     void setMozgasban(bool megy);
 
+    void setPoz(int pozv);
+
     void halad();
 
     bool checkLampa(Allapot all);
+
+    bool atlep(int poz);
 
     virtual void kiir() = 0;
 
@@ -71,7 +75,7 @@ class Auto : public Jarmu {
 public:
     Auto(bool irany = true, const Idopont &erk = 0, const Idopont &gyors = 0, int utasok = 2);
 
-    int getUtasokszama() const;
+    int getUtasokszama() const; //ha nem kell akkor majd torold
 
     virtual void changeSpeed();
 

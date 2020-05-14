@@ -28,10 +28,6 @@ class Szimulacio {
 public:
     Szimulacio(int hossz=100, int p1=20, int p2=80, int ido=0) :  erzekelok(p1, p2), ido(ido),palya(hossz) {}
 
-    const Idopont& getIdo() const;
-
-    int getPalya() const;
-
     void init(const char* Filenev);
 
     void run();
