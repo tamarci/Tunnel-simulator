@@ -8,29 +8,14 @@
 #include <vector>
 #include "jarmu.h"
 
-
+//a jarmuvek kezelesehez hasznalt heterogen kollekcio, es kezelese
 class Forgalom {
     std::vector<Jarmu *> jarmuvek;
 public:
     Forgalom() {}
 
-    Forgalom(const Forgalom &f) {
-        for (int i = 0; i < jarmuvek.size(); ++i) {
-            jarmuvek.push_back(f.jarmuvek[i]->clone());
-        }
-    }
-
-    Forgalom &operator=(const Forgalom &f) {
-        if (&f != this) {
-            for (size_t i = 0; i < jarmuvek.size(); ++i) {
-                delete jarmuvek[i];
-            }
-
-            for (size_t i = 0; i < jarmuvek.size(); ++i) {
-                jarmuvek[i] = f.jarmuvek[i]->clone();
-            }
-        }
-        return *this;
+    size_t getSize(){
+        return jarmuvek.size();
     }
 
     void hozzad(Jarmu *a) {
@@ -51,36 +36,36 @@ public:
                 ossz++;
         }
         if(ossz==1){
-            std::cout<<"sikerult egyet megszamolni valamerre"<<std::endl;
+            std::cout<<"Valami elhaladt az erzekelok elott"<<std::endl;
         }
         return ossz;
     }
 
-    void torol(size_t idx) {
+    void torol(size_t idx) { //torli a megadott elemet
         delete jarmuvek[idx];
         jarmuvek.erase(jarmuvek.begin() + idx);
     }
 
-
+//minden autora megnezi hogyha a lampanal jar az piros-e
 void lampanal(Allapot all, int poz1,int poz2) {
     for (size_t i = 0; i < jarmuvek.size(); ++i) {
 
         if (all != All1 && jarmuvek[i]->isIrany() && jarmuvek[i]->atlep(poz1)){ //logikai irany tesztek kellenek
-
+            //ha pirosuk van megallnak
             jarmuvek[i]->setPoz(poz1 - 1);
             jarmuvek[i]->setMozgasban(false);
             std::cout << "Az " << jarmuvek[i]->getId() << ". jarmu megallt a pirosnal (l1)" << std::endl;
 
         }
         else if(all != All3 && !jarmuvek[i]->isIrany()  && jarmuvek[i]->atlep(poz2)) {
-
+            //masik iranyba is
             jarmuvek[i]->setPoz(poz2 + 1);
             jarmuvek[i]->setMozgasban(false);
             std::cout << "Az " << jarmuvek[i]->getId() << ". jarmu megallt a pirosnal (l2)" << std::endl;
         }
 
         if (all == All1 && jarmuvek[i]->isIrany() && (jarmuvek[i]->getPoz() == poz1- 1))  {
-
+            //ha idokezben ujra zold lett akkor elinditja a varakozokat
             jarmuvek[i]->setMozgasban(true);
             std::cout << "Az " << jarmuvek[i]->getId() << ". jarmu elindult a pirostol (l1)" << std::endl;
 
@@ -96,24 +81,27 @@ void lampanal(Allapot all, int poz1,int poz2) {
     }
 }
 
+    //jarmuvenkent eldonti hogy az adott idopillanatban minek kell tortennie vele
     void kovAllapot(Idopont ido, Allapot all){
         for (size_t i = 0; i < jarmuvek.size(); ++i) {
 
+            //ha ki lepnek a palyara, torlodnek a frogalombol kollekciobol
             if(jarmuvek[i]->getPoz()<0||jarmuvek[i]->getPoz()>100) {
                 std::cout << "Az " << jarmuvek[i]->getId() << ". jarmu elhagyta a palyat" << std::endl;
                 torol(i);
             }
             else {
-
+                //elindulnak
                 if(ido==jarmuvek[i]->getErkezes()) {
                     jarmuvek[i]->setMozgasban(true);
                     std::cout << "Az " << jarmuvek[i]->getId() << ". jarmu megerkezett a palyara" << std::endl;
                 }
+                //gyorsitanak
                 if (ido == jarmuvek[i]->getGyorsitas() && ido.getIdo() != 0) {
                     jarmuvek[i]->changeSpeed();
-                    std::cout << "Az " << jarmuvek[i]->getId() << ". gyorsit" << std::endl;
+                    std::cout << "Az " << jarmuvek[i]->getId() << ". jarmu gyorsit" << std::endl;
                 }
-
+                //haladnak
                 if(jarmuvek[i]->isMozgasban())
                     jarmuvek[i]->halad();
             }

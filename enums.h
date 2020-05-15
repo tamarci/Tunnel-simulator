@@ -6,6 +6,8 @@
 #define NAGYHAZI2_ENUMS_H
 
 //#include "memtrace.h"
+
+//program altal hasznalt enumok
 enum Allapot {
     Init, All1, All2, All3, All4
 };

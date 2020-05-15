@@ -4,6 +4,8 @@
 
 #include "lampak.h"
 //#include "memtrace.h"
+
+// a lamparendszer allapotait vezerlo allapotgep szerkezetet tartalmazza
 void Lamparendszer::kovAllapot(){
     switch (allapot) {
         case (Init) :

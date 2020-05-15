@@ -4,6 +4,8 @@
 #include "erzekelok.h"
 
 //#include "memtrace.h"
+
+//szamlalot noveli,csokkenti
 void Erzekelok::szamlaloNo(int n) {
     szamlalo += n;
 }

@@ -14,8 +14,14 @@
 #include "Szimulacio.h"
 
 int main(){
+    //letrehoz egy szimulaciot a fajl alapjan es futtatja azt
     Szimulacio sz;
+
+    std::cout<<"KIOLVASOTT SZIMULACIOS ADATOK:"<<std::endl;
     sz.init("test.txt");
+
+    std::cout<<"SZIMULACIO FUTASA:"<<std::endl;
     sz.run();
+
     return 0;
 }

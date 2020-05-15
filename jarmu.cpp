@@ -14,15 +14,7 @@ Jarmu::Jarmu(int id,bool irany, const Idopont &erk, const Idopont &gyors) : id(i
     mozgasban = false;
 }
 
-Jarmu::Jarmu(const Jarmu &j) {
-    id=j.id;
-    poz = j.poz;
-    irany = j.irany;
-    erkezes = j.erkezes;
-    speed = j.speed;
-    gyorsitas = j.gyorsitas;
-}
-
+// egy masodpercnyit mozog a mozgasi iranyaba a jarmu
 void Jarmu::halad() {
     if (irany)
         poz += speed;
@@ -30,19 +22,19 @@ void Jarmu::halad() {
         poz -= speed;
 }
 
+// beallitja a jarmu mozgas allapotat
+//ha nincs mozgasban akkor nem fog elore haladni a kovetkezo mp-ben
 void Jarmu::setMozgasban(bool megy) {
     mozgasban = megy;
 }
 
+//a jarmu a pirosnal megall, a fv segitsegevel allitja be a poziciot
 void Jarmu::setPoz(int pozv) {
     poz=pozv;
 }
 
-bool Jarmu::checkLampa(Allapot all) {
-    return (irany && all == All1) || (!irany && all == All3);
-}
-
-bool Jarmu::atlep(int pozv) {   //megnezi, hogy az auto atlepi-e a megadott koo.-t a következo mp-ben
+//megnezi, hogy az auto atlepi-e a megadott koo.-t a következo mp-ben
+bool Jarmu::atlep(int pozv) {
     if (mozgasban) {    //csak akkor van ertelme ezt vizsgalni ha azt auto mozog
         if (irany) { //egyik irany
             if (poz <= pozv && poz + speed > pozv)
@@ -58,25 +50,19 @@ bool Jarmu::atlep(int pozv) {   //megnezi, hogy az auto atlepi-e a megadott koo.
 
 Motor::Motor(int id,bool irany, const Idopont &erk, Idopont gyors, int max) : Jarmu(id,irany, erk, gyors),
                                                                        maxSpeed(max) {}
-
+//adig gyorsit mig el nem eri a may sebesseget
 void Motor::changeSpeed() {
     if (speed + 4 <= maxSpeed)
         speed += 4;
     else speed = maxSpeed;
 }
 
-Jarmu *Motor::clone() {
-    return new Motor(*this);
-}
-
+//kiirja az osszes adatat
 void Motor::kiir() {
     std::cout << "M " <<getId()<<". poz: " << getPoz() << " dir: " << isIrany() << " speed: " << getSpeed() << ' ' << getErkezes() << ' '
               << getGyorsitas() << " maxspeed: " << maxSpeed << std::endl;
 }
 
-int Motor::getMaxSpeed() const {
-    return maxSpeed;
-}
 
 //Auto fv-nyei
 Auto::Auto(int id,bool irany, const Idopont &erk, const Idopont &gyors, int utasok)
@@ -87,6 +73,7 @@ Auto::Auto(int id,bool irany, const Idopont &erk, const Idopont &gyors, int utas
     }
 }
 
+//az utasok szamatol fuggoen gyorsit, lassit
 void Auto::changeSpeed() {
     if (utasokszama > 2)
         speed -= utasokszama;
@@ -96,37 +83,25 @@ void Auto::changeSpeed() {
         speed = 2;
 }
 
-Jarmu *Auto::clone() {
-    return new Auto(*this);
-}
+
 
 void Auto::kiir() {
     std::cout << "A " <<getId()<<". poz: " << getPoz() << " dir: " << isIrany() << " speed: " << getSpeed() << ' ' << getErkezes() << ' '
               << getGyorsitas() << " utasoksz.: " << utasokszama << std::endl;
 }
 
-int Auto::getUtasokszama() const {
-    return utasokszama;
-}
-
 
 //teherauto fv-nyei
 Truck::Truck(int id, bool irany, const Idopont &erk, const Idopont &gyors, int m) : Jarmu(id, irany, erk, gyors),
                                                                             tomeg(m) {}
-
+//tomegetol fugg a gyorsitas merteke
 void Truck::changeSpeed() {
     speed += (2 * (100 / tomeg));
 }
 
-Jarmu *Truck::clone() {
-    return new Truck(*this);
-}
 
 void Truck::kiir() {
     std::cout << "T " <<getId()<<". poz: " << getPoz() << " dir: " << isIrany() << " speed: " << getSpeed() << ' ' << getErkezes() << ' '
               << getGyorsitas() << " tom.: " << tomeg << std::endl;
 }
 
-int Truck::getTomeg() const {
-    return tomeg;
-}

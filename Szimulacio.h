@@ -8,6 +8,8 @@
 #include <iostream>
 #include <fstream>
 #include <stdexcept>
+#include <regex>
+#include <string>
 
 #include "lampak.h"
 #include "enums.h"
@@ -16,6 +18,7 @@
 #include "Idopont.h"
 #include "Forgalom.h"
 //#include "memtrace.h"
+
 
 
 
@@ -31,9 +34,6 @@ public:
     void init(const char* Filenev);
 
     void run();
-
-    ~Szimulacio() {}
-
 
 };
 

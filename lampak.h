@@ -15,6 +15,7 @@ public:
 
     Szin getSzin() const { return szin; }
 
+
     void szintVallt() {
         if (szin == piros)
             szin = zold;
@@ -31,6 +32,7 @@ class Lamparendszer {
 public:
     Lamparendszer(): allapot(Init){}
 
+    //lepteti a rendszer egy kovetkezo allapotba
     void kovAllapot();
 
     Allapot getAllapot() const { return allapot; }

@@ -24,8 +24,6 @@ public:
 
     Jarmu(int id, bool irany, const Idopont &erk, const Idopont &gyors);
 
-    Jarmu(const Jarmu &j);
-
     int getId(){
         return  id;
     }
@@ -62,16 +60,11 @@ public:
 
     void halad();
 
-    bool checkLampa(Allapot all);
-
     bool atlep(int poz);
 
     virtual void kiir() = 0;
 
-    virtual Jarmu *clone() = 0;
-
-    virtual ~Jarmu() {}
-
+    virtual ~Jarmu(){}
 
 };
 
@@ -80,31 +73,22 @@ class Auto : public Jarmu {
 public:
     Auto(int id, bool irany = true, const Idopont &erk = 0, const Idopont &gyors = 0, int utasok = 2);
 
-    int getUtasokszama() const; //ha nem kell akkor majd torold
-
     virtual void changeSpeed();
 
     virtual void kiir();
 
-    virtual Jarmu *clone();
-
-    ~Auto() {}
 };
 
 class Motor : public Jarmu {
     int maxSpeed;
 public:
-    Motor(int id, bool irany = 1, const Idopont &erk = 0, Idopont gyors = 0, int max = 10);
-
-    int getMaxSpeed() const;
+    Motor(int id, bool irany = true, const Idopont &erk = 0, Idopont gyors = 0, int max = 10);
 
     virtual void changeSpeed();
 
     virtual void kiir();
 
-    virtual Jarmu *clone();
 
-    ~Motor() {}
 };
 
 class Truck : public Jarmu {
@@ -114,16 +98,11 @@ public:
 
     Truck(int id, bool irany = true, const Idopont &erk = 0, const Idopont &gyors = 0, int m = 100);
 
-
-    int getTomeg() const;
-
     virtual void changeSpeed();
 
     virtual void kiir();
 
-    virtual Jarmu *clone();
 
-    ~Truck() {}
 };
 
 #endif //NAGYHAZI2_JARMU_H
