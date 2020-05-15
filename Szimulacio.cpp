@@ -108,13 +108,13 @@ void Szimulacio::run() {
         //Erzekelok novelese, csokkentese ha egy jarmu be, ki lep az alagutbol
         if (lampak.getAllapot() == All1 || lampak.getAllapot() == All2) {
 
-            erzekelok.szamlaloNo(forgalom.fatlep(erzekelok.getPoz1()));
-            erzekelok.szamlaloCsokken(forgalom.fatlep(erzekelok.getPoz2()));
+            erzekelok.szamlaloNo(forgalom.forg_atlep(erzekelok.getPoz1()));
+            erzekelok.szamlaloCsokken(forgalom.forg_atlep(erzekelok.getPoz2()));
 
         } else if (lampak.getAllapot() == All3 || lampak.getAllapot() == All4) {
         //a 0 es 1 haladasi iranyokra kulon kell vizsgalni
-            erzekelok.szamlaloNo(forgalom.fatlep(erzekelok.getPoz2()));
-            erzekelok.szamlaloCsokken(forgalom.fatlep(erzekelok.getPoz1()));
+            erzekelok.szamlaloNo(forgalom.forg_atlep(erzekelok.getPoz2()));
+            erzekelok.szamlaloCsokken(forgalom.forg_atlep(erzekelok.getPoz1()));
 
         }
 
